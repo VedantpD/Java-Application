@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
                 getTargerUser();
                 String targetUserID = tUserName ; // The ID of the user you want to call.
                 String targetUserName = tUserID; // The username of the user you want to call.
+
+                Log.d("maini",userName+" "+userID);
+                Log.d("maini",tUserName+" "+tUserID);
                 Context context = getApplicationContext(); // Android context.
 
                 ZegoSendCallInvitationButton button = new ZegoSendCallInvitationButton(context);
@@ -103,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 .commitNow();
     }
     private void getCredentials(){
-        SharedPreferences prefs = this.getSharedPreferences("Credentials",Context.MODE_PRIVATE);
+        SharedPreferences prefs = this.getSharedPreferences("Credential",Context.MODE_PRIVATE);
         userName = prefs.getString("user_name","invalid");
         userID = prefs.getString("user_ID","invalid");
     }
