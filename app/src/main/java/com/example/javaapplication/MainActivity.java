@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getTargerUser();
-                String targetUserID = tUserName ; // The ID of the user you want to call.
-                String targetUserName = tUserID; // The username of the user you want to call.
+                String targetUserID = tUserID ; // The ID of the user you want to call.
+                String targetUserName = tUserName; // The username of the user you want to call.
 
                 Log.d("maini",userName+" "+userID);
                 Log.d("maini",tUserName+" "+tUserID);
@@ -71,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
                 button.setResourceID("zego_uikit_call"); // Please fill in the resource ID name that has been configured in the ZEGOCLOUD's console here.
                 button.setInvitees(Collections.singletonList(new ZegoUIKitUser(targetUserID,targetUserName)));
                 button.performClick();
+
+                button.showErrorToast(true);
+
             }
         });
 
@@ -80,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
         long appID = 841776771;   // yourAppID
         String appSign = "3beba938b8d23e3b3c8f52ea4d8cfe08c68002de936db5b60935b9c261e7d95d";  // yourAppSign
-//        String userID = userID; // yourUserID, userID should only contain numbers, English characters, and '_'.
-//        String userName = "harsh_sir";   // yourUserName
 
         ZegoUIKitPrebuiltCallInvitationConfig callInvitationConfig = new ZegoUIKitPrebuiltCallInvitationConfig();
 
