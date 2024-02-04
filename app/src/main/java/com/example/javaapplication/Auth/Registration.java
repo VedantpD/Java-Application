@@ -34,7 +34,7 @@ public class Registration extends AppCompatActivity {
             if(fieldCheck()){
                 SharedPreferences.Editor editor = this.getSharedPreferences("Credential", Context.MODE_PRIVATE).edit();
                 editor.putString("user_name", etxtUserName.getText().toString().trim());
-                editor.putString("user_id", etxtUserID.getText().toString().trim());
+                editor.putString("user_ID", etxtUserID.getText().toString().trim());
                 editor.putBoolean("first_time", false);
                 editor.apply();
 
