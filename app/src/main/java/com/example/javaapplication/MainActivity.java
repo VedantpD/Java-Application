@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallConfig;
 import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallFragment;
@@ -26,6 +28,9 @@ import java.util.HashSet;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnCall;
+    private EditText etxtRUserName,etxtRUserID;
+    private String userName , userID;
+    private String tUserName , tUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,25 +38,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnCall = findViewById(R.id.btnCall);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // Check if your app has notification access
-            if (!isNotificationServiceEnabled()) {
-                // If not, open the notification access settings for your app
-                Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
-                startActivity(intent);
-            }
-        }
+        etxtRUserName = findViewById(R.id.etxtRUserName);
+        etxtRUserID = findViewById(R.id.etxtRUserID);
+
         //addCallFragment();
+        getCredentials();
+
         initCallInviteFragment();
         setClicks();
+    }
+
+    private void getTargerUser() {
+        tUserName = etxtRUserName.getText().toString().trim();
+        tUserID = etxtRUserID.getText().toString().trim();
     }
 
     private void setClicks() {
         btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String targetUserID = "vedant_ID" ; // The ID of the user you want to call.
-                String targetUserName = "vedant"; // The username of the user you want to call.
+                getTargerUser();
+                String targetUserID = tUserName ; // The ID of the user you want to call.
+                String targetUserName = tUserID; // The username of the user you want to call.
                 Context context = getApplicationContext(); // Android context.
 
                 ZegoSendCallInvitationButton button = new ZegoSendCallInvitationButton(context);
@@ -65,11 +73,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initCallInviteFragment() {
-        Application application = getApplication(); // Android's application context
+
         long appID = 841776771;   // yourAppID
         String appSign = "3beba938b8d23e3b3c8f52ea4d8cfe08c68002de936db5b60935b9c261e7d95d";  // yourAppSign
-        String userID = "ashray_ID"; // yourUserID, userID should only contain numbers, English characters, and '_'.
-        String userName = "ashray";   // yourUserName
+//        String userID = userID; // yourUserID, userID should only contain numbers, English characters, and '_'.
+//        String userName = "harsh_sir";   // yourUserName
 
         ZegoUIKitPrebuiltCallInvitationConfig callInvitationConfig = new ZegoUIKitPrebuiltCallInvitationConfig();
 
@@ -94,10 +102,9 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container, fragment)
                 .commitNow();
     }
-    private boolean isNotificationServiceEnabled() {
-        // Check if your app has notification access
-        String packageName = getPackageName();
-        String flat = Settings.Secure.getString(getContentResolver(), "enabled_notification_listeners");
-        return flat != null && flat.contains(packageName);
+    private void getCredentials(){
+        SharedPreferences prefs = this.getSharedPreferences("Credentials",Context.MODE_PRIVATE);
+        userName = prefs.getString("user_name","invalid");
+        userID = prefs.getString("user_ID","invalid");
     }
 }
